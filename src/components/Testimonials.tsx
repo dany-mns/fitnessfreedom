@@ -10,23 +10,26 @@ const Testimonials = () => {
       name: 'Client Name 1',
       result: t.testimonials.client1Result,
       quote: t.testimonials.client1Quote,
+      image: '/testimonials/ptestimonil01.jpeg',
     },
     {
       name: 'Client Name 2',
       result: t.testimonials.client2Result,
       quote: t.testimonials.client2Quote,
+      image: '/testimonials/ptestimonil02.JPG',
     },
     {
       name: 'Client Name 3',
       result: t.testimonials.client3Result,
       quote: t.testimonials.client3Quote,
+      image: '/testimonials/ptestimonil03.jpeg',
     },
   ]
 
   const videoTestimonials = [
-    { name: 'Video Testimonial 1', duration: '2:30' },
-    { name: 'Video Testimonial 2', duration: '3:15' },
-    { name: 'Video Testimonial 3', duration: '1:45' },
+    { name: 'Video Testimonial 1', youtubeId: 'F8_GaFYPyz8' },
+    { name: 'Video Testimonial 2', youtubeId: 'gGFqysUc-cQ' },
+    { name: 'Video Testimonial 3', youtubeId: 'N5RVd8jS4_c' },
   ]
 
   return (
@@ -71,25 +74,12 @@ const Testimonials = () => {
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {photoTestimonials.map((testimonial, index) => (
               <div key={index} className="glass-effect rounded-2xl overflow-hidden hover-lift">
-                <div className="aspect-square bg-[#1a1a2e] flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="w-20 h-20 mx-auto mb-4 bg-[#ff6b35]/20 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-10 h-10 text-[#ff6b35]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-white/60 text-sm">{t.testimonials.photoPlaceholder}</p>
-                  </div>
+                <div className="aspect-square bg-[#1a1a2e] overflow-hidden">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="p-6">
                   <div className="text-[#ff6b35] font-semibold mb-2">
@@ -109,22 +99,14 @@ const Testimonials = () => {
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {videoTestimonials.map((video, index) => (
               <div key={index} className="glass-effect rounded-2xl overflow-hidden hover-lift">
-                <div className="aspect-video bg-[#1a1a2e] flex items-center justify-center relative">
-                  <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-[#ff6b35]/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-[#ff6b35]/30 transition-colors">
-                      <svg
-                        className="w-8 h-8 text-[#ff6b35]"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <p className="text-white/60 text-sm">{t.testimonials.videoPlaceholder}</p>
-                  </div>
-                  <div className="absolute bottom-4 right-4 bg-black/50 px-2 py-1 rounded text-white text-xs">
-                    {video.duration}
-                  </div>
+                <div className="aspect-video bg-[#1a1a2e]">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                    title={video.name}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
                 </div>
                 <div className="p-4">
                   <p className="text-white font-semibold">{video.name}</p>
