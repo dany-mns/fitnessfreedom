@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
-  --color-primary: #ff6b35;
+  --color-primary: #dabc68;
   --color-primary-dark: #e55a2b;
   --color-secondary: #1a1a2e;
   --color-accent: #16213e;
@@ -23,7 +23,7 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #ff8f6b 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #e8cc7a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

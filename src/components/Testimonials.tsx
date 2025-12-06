@@ -36,7 +36,7 @@ const Testimonials = () => {
     <section id="testimonials" className="py-20 md:py-32 bg-[#0f0f1a] px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <span className="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">
+          <span className="text-[#dabc68] font-semibold text-sm uppercase tracking-wider">
             {t.testimonials.label}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
@@ -52,7 +52,7 @@ const Testimonials = () => {
             onClick={() => setActiveTab('photos')}
             className={`px-6 py-3 rounded-full font-semibold transition-all ${
               activeTab === 'photos'
-                ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] text-white'
+                ? 'bg-gradient-to-r from-[#dabc68] to-[#e8cc7a] text-white'
                 : 'glass-effect text-white/70 hover:text-white'
             }`}
           >
@@ -62,7 +62,7 @@ const Testimonials = () => {
             onClick={() => setActiveTab('videos')}
             className={`px-6 py-3 rounded-full font-semibold transition-all ${
               activeTab === 'videos'
-                ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] text-white'
+                ? 'bg-gradient-to-r from-[#dabc68] to-[#e8cc7a] text-white'
                 : 'glass-effect text-white/70 hover:text-white'
             }`}
           >
@@ -82,7 +82,7 @@ const Testimonials = () => {
                   />
                 </div>
                 <div className="p-6">
-                  <div className="text-[#ff6b35] font-semibold mb-2">
+                  <div className="text-[#dabc68] font-semibold mb-2">
                     {testimonial.result}
                   </div>
                   <p className="text-white/70 text-sm mb-4 italic">

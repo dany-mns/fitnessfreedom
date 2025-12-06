@@ -63,7 +63,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white/60 hover:bg-[#ff6b35] hover:text-white transition-all"
+                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white/60 hover:bg-[#dabc68] hover:text-white transition-all"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -75,19 +75,19 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-6">{t.footer.quickLinks}</h3>
             <nav className="flex flex-col gap-3">
-              <a href="#home" className="text-white/60 hover:text-[#ff6b35] transition-colors">
+              <a href="#home" className="text-white/60 hover:text-[#dabc68] transition-colors">
                 {t.nav.home}
               </a>
-              <a href="#about" className="text-white/60 hover:text-[#ff6b35] transition-colors">
+              <a href="#about" className="text-white/60 hover:text-[#dabc68] transition-colors">
                 {t.nav.about}
               </a>
-              <a href="#match" className="text-white/60 hover:text-[#ff6b35] transition-colors">
+              <a href="#match" className="text-white/60 hover:text-[#dabc68] transition-colors">
                 {t.nav.forYou}
               </a>
-              <a href="#testimonials" className="text-white/60 hover:text-[#ff6b35] transition-colors">
+              <a href="#testimonials" className="text-white/60 hover:text-[#dabc68] transition-colors">
                 {t.nav.results}
               </a>
-              <a href="#booking" className="text-white/60 hover:text-[#ff6b35] transition-colors">
+              <a href="#booking" className="text-white/60 hover:text-[#dabc68] transition-colors">
                 {t.nav.bookNow}
               </a>
             </nav>
@@ -100,7 +100,7 @@ const Footer = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-white/60 hover:text-[#ff6b35] transition-colors"
+                  className="text-white/60 hover:text-[#dabc68] transition-colors"
                 >
                   {link.name}
                 </a>

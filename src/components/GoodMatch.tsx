@@ -52,7 +52,7 @@ const GoodMatch = () => {
     <section id="match" className="py-20 md:py-32 gradient-bg px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <span className="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">
+          <span className="text-[#dabc68] font-semibold text-sm uppercase tracking-wider">
             {t.match.label}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
@@ -69,7 +69,7 @@ const GoodMatch = () => {
               key={index}
               className="glass-effect rounded-2xl p-6 sm:p-8 hover-lift text-center"
             >
-              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-[#ff6b35] to-[#ff8f6b] rounded-2xl flex items-center justify-center text-white">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-[#dabc68] to-[#e8cc7a] rounded-2xl flex items-center justify-center text-white">
                 {point.icon}
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
@@ -85,7 +85,7 @@ const GoodMatch = () => {
         <div className="text-center mt-12">
           <a
             href="#booking"
-            className="inline-block bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-[#ff6b35]/30 transition-all hover:scale-105"
+            className="inline-block bg-gradient-to-r from-[#dabc68] to-[#e8cc7a] text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-[#dabc68]/30 transition-all hover:scale-105"
           >
             {t.match.cta}
           </a>
