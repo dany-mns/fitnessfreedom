@@ -1,17 +1,20 @@
+import { useLanguage } from '../i18n'
+
 const Booking = () => {
+  const { t } = useLanguage()
+
   return (
     <section id="booking" className="py-20 md:py-32 gradient-bg px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <span className="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">
-            Get Started
+            {t.booking.label}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            Book Your <span className="text-gradient">Free Consultation</span>
+            {t.booking.title1} <span className="text-gradient">{t.booking.title2}</span>
           </h2>
           <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto">
-            Ready to start your transformation? Schedule a free 1:1 consultation 
-            to discuss your goals and see how I can help you achieve them.
+            {t.booking.description}
           </p>
         </div>
 
@@ -37,9 +40,9 @@ const Booking = () => {
                       />
                     </svg>
                   </div>
-                  <p className="text-white/60 text-lg mb-2">Calendly Widget</p>
+                  <p className="text-white/60 text-lg mb-2">{t.booking.placeholder}</p>
                   <p className="text-white/40 text-sm">
-                    Calendly integration will be added here
+                    {t.booking.hint}
                   </p>
                 </div>
               </div>

@@ -1,4 +1,8 @@
+import { useLanguage } from '../i18n'
+
 const GoodMatch = () => {
+  const { t } = useLanguage()
+
   const points = [
     {
       icon: (
@@ -11,9 +15,8 @@ const GoodMatch = () => {
           />
         </svg>
       ),
-      title: "You're Ready for Change",
-      description:
-        "You're tired of quick fixes and ready to commit to a sustainable transformation. You understand that real results take time and consistent effort.",
+      title: t.match.point1Title,
+      description: t.match.point1Desc,
     },
     {
       icon: (
@@ -26,9 +29,8 @@ const GoodMatch = () => {
           />
         </svg>
       ),
-      title: "You Value Your Time",
-      description:
-        "You have a busy schedule but you're willing to prioritize your health. You want efficient workouts that deliver maximum results without spending hours at the gym.",
+      title: t.match.point2Title,
+      description: t.match.point2Desc,
     },
     {
       icon: (
@@ -41,9 +43,8 @@ const GoodMatch = () => {
           />
         </svg>
       ),
-      title: "You Want Expert Guidance",
-      description:
-        "You're looking for personalized coaching, not generic programs. You want someone who understands your unique challenges and creates a plan tailored to your goals.",
+      title: t.match.point3Title,
+      description: t.match.point3Desc,
     },
   ]
 
@@ -52,14 +53,13 @@ const GoodMatch = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <span className="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">
-            Is This For You?
+            {t.match.label}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            You're a <span className="text-gradient">Good Match</span> If...
+            {t.match.title1} <span className="text-gradient">{t.match.title2}</span> {t.match.title3}
           </h2>
           <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto">
-            My coaching is designed for people who are serious about making a lasting change. 
-            See if we're the right fit for each other.
+            {t.match.description}
           </p>
         </div>
 
@@ -87,7 +87,7 @@ const GoodMatch = () => {
             href="#booking"
             className="inline-block bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-[#ff6b35]/30 transition-all hover:scale-105"
           >
-            Let's Work Together
+            {t.match.cta}
           </a>
         </div>
       </div>

@@ -1,4 +1,8 @@
+import { useLanguage } from '../i18n'
+
 const Hero = () => {
+  const { t } = useLanguage()
+
   return (
     <section
       id="home"
@@ -8,26 +12,25 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
           <div className="flex-1 text-center lg:text-left order-2 lg:order-1">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Transform Your Body,
+              {t.hero.title1}
               <br />
-              <span className="text-gradient">Unlock Your Freedom</span>
+              <span className="text-gradient">{t.hero.title2}</span>
             </h1>
             <p className="text-white/70 text-base sm:text-lg md:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
-              Personalized fitness coaching that fits your lifestyle. 
-              Get the results you deserve with a program designed specifically for you.
+              {t.hero.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
                 href="#booking"
                 className="bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-[#ff6b35]/30 transition-all hover:scale-105"
               >
-                Book Free Consultation
+                {t.hero.cta}
               </a>
               <a
                 href="#about"
                 className="glass-effect text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/20 transition-all"
               >
-                Learn More
+                {t.hero.learnMore}
               </a>
             </div>
           </div>
@@ -48,10 +51,10 @@ const Hero = () => {
                       </svg>
                     </div>
                     <p className="text-white/60 text-sm sm:text-base">
-                      Your introduction video will appear here
+                      {t.hero.videoPlaceholder}
                     </p>
                     <p className="text-white/40 text-xs sm:text-sm mt-2">
-                      Replace with your video embed code
+                      {t.hero.videoHint}
                     </p>
                   </div>
                 </div>

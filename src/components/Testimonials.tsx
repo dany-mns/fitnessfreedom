@@ -1,23 +1,25 @@
 import { useState } from 'react'
+import { useLanguage } from '../i18n'
 
 const Testimonials = () => {
   const [activeTab, setActiveTab] = useState<'photos' | 'videos'>('photos')
+  const { t } = useLanguage()
 
   const photoTestimonials = [
     {
       name: 'Client Name 1',
-      result: 'Lost 15kg in 4 months',
-      quote: 'The personalized approach made all the difference. I finally found a program that works with my lifestyle.',
+      result: t.testimonials.client1Result,
+      quote: t.testimonials.client1Quote,
     },
     {
       name: 'Client Name 2',
-      result: 'Gained muscle & confidence',
-      quote: 'Not just physical transformation, but mental too. I feel stronger and more confident than ever.',
+      result: t.testimonials.client2Result,
+      quote: t.testimonials.client2Quote,
     },
     {
       name: 'Client Name 3',
-      result: 'Sustainable habits for life',
-      quote: 'This is the first time I\'ve kept the weight off. The habits I learned are now part of my daily routine.',
+      result: t.testimonials.client3Result,
+      quote: t.testimonials.client3Quote,
     },
   ]
 
@@ -32,13 +34,13 @@ const Testimonials = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <span className="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">
-            Success Stories
+            {t.testimonials.label}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            Real <span className="text-gradient">Transformations</span>
+            {t.testimonials.title1} <span className="text-gradient">{t.testimonials.title2}</span>
           </h2>
           <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto">
-            Don't just take my word for it. See what my clients have achieved and hear their stories.
+            {t.testimonials.description}
           </p>
         </div>
 
@@ -51,7 +53,7 @@ const Testimonials = () => {
                 : 'glass-effect text-white/70 hover:text-white'
             }`}
           >
-            Photo Results
+            {t.testimonials.photoResults}
           </button>
           <button
             onClick={() => setActiveTab('videos')}
@@ -61,7 +63,7 @@ const Testimonials = () => {
                 : 'glass-effect text-white/70 hover:text-white'
             }`}
           >
-            Video Stories
+            {t.testimonials.videoStories}
           </button>
         </div>
 
@@ -86,7 +88,7 @@ const Testimonials = () => {
                         />
                       </svg>
                     </div>
-                    <p className="text-white/60 text-sm">Before/After photo</p>
+                    <p className="text-white/60 text-sm">{t.testimonials.photoPlaceholder}</p>
                   </div>
                 </div>
                 <div className="p-6">
@@ -118,7 +120,7 @@ const Testimonials = () => {
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>
-                    <p className="text-white/60 text-sm">Video testimonial</p>
+                    <p className="text-white/60 text-sm">{t.testimonials.videoPlaceholder}</p>
                   </div>
                   <div className="absolute bottom-4 right-4 bg-black/50 px-2 py-1 rounded text-white text-xs">
                     {video.duration}

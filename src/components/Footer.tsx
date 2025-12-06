@@ -1,5 +1,8 @@
+import { useLanguage } from '../i18n'
+
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const { t } = useLanguage()
 
   const socialLinks = [
     {
@@ -32,9 +35,9 @@ const Footer = () => {
   ]
 
   const legalLinks = [
-    { name: 'Terms & Conditions', href: '/terms' },
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Cookie Policy', href: '/cookies' },
+    { name: t.footer.terms, href: '/terms' },
+    { name: t.footer.privacy, href: '/privacy' },
+    { name: t.footer.cookies, href: '/cookies' },
   ]
 
   return (
@@ -49,7 +52,7 @@ const Footer = () => {
               <span className="font-bold text-xl">Fitness Freedom</span>
             </div>
             <p className="text-white/60 mb-6">
-              Transform your body and unlock your freedom with personalized fitness coaching.
+              {t.footer.tagline}
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
@@ -68,28 +71,28 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-6">Quick Links</h3>
+            <h3 className="font-semibold text-lg mb-6">{t.footer.quickLinks}</h3>
             <nav className="flex flex-col gap-3">
               <a href="#home" className="text-white/60 hover:text-[#ff6b35] transition-colors">
-                Home
+                {t.nav.home}
               </a>
               <a href="#about" className="text-white/60 hover:text-[#ff6b35] transition-colors">
-                About Me
+                {t.nav.about}
               </a>
               <a href="#match" className="text-white/60 hover:text-[#ff6b35] transition-colors">
-                Is This For You
+                {t.nav.forYou}
               </a>
               <a href="#testimonials" className="text-white/60 hover:text-[#ff6b35] transition-colors">
-                Results
+                {t.nav.results}
               </a>
               <a href="#booking" className="text-white/60 hover:text-[#ff6b35] transition-colors">
-                Book Consultation
+                {t.nav.bookNow}
               </a>
             </nav>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-6">Legal</h3>
+            <h3 className="font-semibold text-lg mb-6">{t.footer.legal}</h3>
             <nav className="flex flex-col gap-3">
               {legalLinks.map((link) => (
                 <a
@@ -107,10 +110,10 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/40 text-sm text-center md:text-left">
-              © {currentYear} FitnessFreedom.eu. All rights reserved.
+              © {currentYear} FitnessFreedom.eu. {t.footer.copyright}
             </p>
             <p className="text-white/40 text-sm">
-              Made with ❤️ for your fitness journey
+              {t.footer.madeWith}
             </p>
           </div>
         </div>
