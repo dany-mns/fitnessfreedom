@@ -16,7 +16,7 @@ const Testimonials = () => {
       name: 'Client Name 2',
       result: t.testimonials.client2Result,
       quote: t.testimonials.client2Quote,
-      image: '/testimonials/ptestimonil02.JPG',
+      image: '/testimonials/ptestimonil02.jpeg',
     },
     {
       name: 'Client Name 3',
