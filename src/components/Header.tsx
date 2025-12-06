@@ -31,9 +31,11 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <a href="#home" className="flex items-center gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#ff6b35] to-[#ff8f6b] rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg md:text-xl">FF</span>
-            </div>
+            <img 
+              src="/logo.webp" 
+              alt="Fitness Freedom" 
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
+            />
             <span className="text-white font-bold text-lg md:text-xl tracking-tight">
               Fitness Freedom
             </span>

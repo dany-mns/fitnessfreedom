@@ -46,9 +46,11 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#ff8f6b] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">FF</span>
-              </div>
+              <img 
+                src="/logo.webp" 
+                alt="Fitness Freedom" 
+                className="w-10 h-10 rounded-full object-cover"
+              />
               <span className="font-bold text-xl">Fitness Freedom</span>
             </div>
             <p className="text-white/60 mb-6">

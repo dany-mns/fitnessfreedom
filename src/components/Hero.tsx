@@ -39,24 +39,15 @@ const Hero = () => {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-[#ff6b35] to-[#ff8f6b] rounded-2xl blur-2xl opacity-30"></div>
               <div className="relative glass-effect rounded-2xl p-4 sm:p-6">
-                <div className="aspect-video bg-[#1a1a2e] rounded-xl overflow-hidden flex items-center justify-center">
-                  <div className="text-center p-4 sm:p-8">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 bg-[#ff6b35]/20 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-8 h-8 sm:w-10 sm:h-10 text-[#ff6b35]"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <p className="text-white/60 text-sm sm:text-base">
-                      {t.hero.videoPlaceholder}
-                    </p>
-                    <p className="text-white/40 text-xs sm:text-sm mt-2">
-                      {t.hero.videoHint}
-                    </p>
-                  </div>
+                <div className="aspect-video bg-[#1a1a2e] rounded-xl overflow-hidden">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/gs2gB8g0R6c"
+                    title="Fitness Freedom"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
                 </div>
               </div>
             </div>
