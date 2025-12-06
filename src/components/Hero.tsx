@@ -6,9 +6,29 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-screen gradient-bg flex items-center justify-center pt-20 px-4"
+      className="min-h-screen relative flex items-center justify-center pt-20 px-4 overflow-hidden"
     >
-      <div className="container mx-auto">
+      <div className="absolute inset-0 bg-[#0a0a14]"></div>
+      
+      <div className="absolute inset-0 opacity-40">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#ff6b35] rounded-full blur-[150px] animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#ff8f6b] rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#1a1a2e] rounded-full blur-[100px]"></div>
+      </div>
+
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,107,53,0.3) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+      </div>
+
+      <div className="absolute top-20 left-10 w-2 h-2 bg-[#ff6b35] rounded-full animate-ping"></div>
+      <div className="absolute top-40 right-20 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+      <div className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-[#ff8f6b] rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute bottom-20 right-40 w-2 h-2 bg-[#ff6b35]/50 rounded-full animate-ping" style={{ animationDelay: '1.5s' }}></div>
+
+      <div className="container mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
           <div className="flex-1 text-center lg:text-left order-2 lg:order-1">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
