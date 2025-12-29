@@ -1,0 +1,46 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cloudflared
+        run: curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared && chmod +x /usr/local/bin/cloudflared
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KEY }}" > ~/.ssh/deploy-key
+          chmod 600 ~/.ssh/deploy-key
+
+      - name: Setup SSH config
+        run: |
+          echo "Host deploy-server" >> ~/.ssh/config
+          echo "  Hostname ${{ secrets.HOST }}" >> ~/.ssh/config
+          echo "  User ${{ secrets.USER }}" >> ~/.ssh/config
+          echo "  ProxyCommand cloudflared access ssh --hostname %h" >> ~/.ssh/config
+          echo "  Port 22" >> ~/.ssh/config
+          echo "  ServerAliveInterval 100" >> ~/.ssh/config
+          echo "  IdentitiesOnly yes" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/deploy-key" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      - name: Deploy
+        timeout-minutes: 10
+        run: |
+          ssh deploy-server 'set -e;
+            cd /home/${{ secrets.USER }}/fds/fitnessfreedom;
+            git fetch origin main;
+            git reset --hard origin/main;
+            docker build -t fitnessfreedom .;
+            docker stop fitnessfreedom || true;
+            docker rm fitnessfreedom || true;
+            docker run -d --name fitnessfreedom --restart unless-stopped -p 3002:80 fitnessfreedom;
+            docker image prune -f;
+            echo "Deployment completed successfully!"'
