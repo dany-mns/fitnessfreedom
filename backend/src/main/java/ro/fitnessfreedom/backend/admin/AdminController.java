@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import ro.fitnessfreedom.backend.campaign.CampaignRepository;
 import ro.fitnessfreedom.backend.campaign.CampaignStats;
+import ro.fitnessfreedom.backend.submission.SourceStats;
 import ro.fitnessfreedom.backend.submission.SubmissionRepository;
 import ro.fitnessfreedom.backend.submission.SubmissionView;
 
@@ -38,5 +39,10 @@ class AdminController {
     List<SubmissionView> submissions(@PathVariable String slug,
                                      @RequestParam(defaultValue = "100") @Min(1) @Max(1000) int limit) {
         return submissions.findLatestByCampaign(slug, limit);
+    }
+
+    @GetMapping("/{slug}/sources")
+    List<SourceStats> sources(@PathVariable String slug) {
+        return submissions.countBySource(slug);
     }
 }

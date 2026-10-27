@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from 'react'
-import { readAttribution, submitForm, type AnswerValue } from '../../api/submissions'
+import { readAttribution } from '../../api/attribution'
+import { submitForm, type AnswerValue } from '../../api/submissions'
 import { countries, DEFAULT_COUNTRY_ISO, type Country } from '../../config/countries'
 import type { FormDefinition, FormField } from '../../config/forms'
 import { useLanguage, type Translations } from '../../i18n'
+import { ArrowRightIcon } from '../icons'
 import FormFieldInput from './FormFieldInput'
 import PhoneInput from './PhoneInput'
 import QuestionBlock from './QuestionBlock'
@@ -79,13 +81,13 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
       <div className="mb-8">
         <div className="mb-2 flex items-center justify-between text-xs font-medium uppercase tracking-wider">
           <span className="text-white/40">{form.badge[language]}</span>
-          <span className="text-[#dabc68] tabular-nums">
+          <span className="text-primary tabular-nums">
             {completedCount}/{requiredKeys.length} {t.form.progress}
           </span>
         </div>
         <div className="h-px overflow-hidden bg-white/10" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
           <div
-            className="h-full bg-[#dabc68] transition-[width] duration-500 ease-out"
+            className="h-full bg-primary transition-[width] duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -155,19 +157,17 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="group mt-8 flex w-full items-center justify-center gap-3 rounded-full bg-[#dabc68] px-8 py-3.5 font-semibold text-[#1a1a2e] transition-colors hover:bg-[#e8cc7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dabc68]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f1a] disabled:cursor-wait disabled:opacity-70"
+        className="btn-primary group mt-8 w-full disabled:cursor-wait disabled:opacity-70"
       >
         {status === 'submitting' ? (
           <>
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#1a1a2e]/30 border-t-[#1a1a2e]" aria-hidden="true" />
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-ink/30 border-t-ink" aria-hidden="true" />
             {t.form.submitting}
           </>
         ) : (
           <>
             {t.form.submit}
-            <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
+            <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </>
         )}
       </button>

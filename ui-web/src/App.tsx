@@ -1,15 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Header, Hero, About, GoodMatch, Testimonials, Booking, Footer, FormPage } from './components'
+import { Header, Hero, GoodMatch, Offer, Testimonials, Process, About, Faq, Booking, Footer, FormPage, ScrollToTop } from './components'
 import { LanguageProvider } from './i18n'
 
 const HomePage = () => (
-  <div className="min-h-screen bg-[#1a1a2e]">
+  <div className="min-h-screen bg-surface">
     <Header />
     <main>
       <Hero />
-      <About />
       <GoodMatch />
+      <Offer />
       <Testimonials />
+      <Process />
+      <About />
+      <Faq />
       <Booking />
     </main>
     <Footer />
@@ -19,6 +22,7 @@ const HomePage = () => (
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <LanguageProvider>
         <Routes>
           <Route path="/form/:slug" element={<FormPage />} />

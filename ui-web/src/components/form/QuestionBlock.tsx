@@ -14,7 +14,7 @@ interface QuestionBlockProps {
 const QuestionBlock = ({ index, labelId, errorId, label, hint, optionalLabel, error, children }: QuestionBlockProps) => (
   <div className="py-6 first:pt-0 last:pb-0">
     <div className="flex items-baseline gap-3">
-      <span className="font-mono text-xs font-semibold text-[#dabc68] tabular-nums">
+      <span className="font-mono text-xs font-semibold text-primary tabular-nums">
         {String(index).padStart(2, '0')}
       </span>
       <div>

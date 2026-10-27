@@ -2,19 +2,19 @@ import { useState, type ReactNode } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { findForm, type FormDefinition } from '../../config/forms'
 import { CALENDLY_URL } from '../../config/links'
-import { useLanguage } from '../../i18n'
+import { localizedPath, useLanguage } from '../../i18n'
 import LeadForm from './LeadForm'
-import { CheckIcon } from './icons'
+import { CheckIcon } from '../icons'
 
 const PageShell = ({ children }: { children: ReactNode }) => {
   const { language, t } = useLanguage()
   const location = useLocation()
-  const homePath = language === 'en' ? '/en' : '/'
+  const homePath = localizedPath(language, '/')
   const switchPath =
     (language === 'en' ? location.pathname.replace(/^\/en/, '') : `/en${location.pathname}`) + location.search
 
   return (
-    <div className="min-h-screen bg-[#0f0f1a] text-white">
+    <div className="min-h-screen bg-surface text-white">
       <header className="border-b border-white/5">
         <div className="container mx-auto flex items-center justify-between px-4 py-5">
           <Link to={homePath} className="flex items-center gap-3">
@@ -24,7 +24,7 @@ const PageShell = ({ children }: { children: ReactNode }) => {
           <div className="flex items-center gap-2 text-sm">
             <Link
               to={switchPath}
-              className="rounded-full border border-white/15 px-3 py-1.5 font-semibold uppercase tracking-wider text-white/70 transition-colors hover:border-[#dabc68] hover:text-[#dabc68]"
+              className="rounded-full border border-white/15 px-3 py-1.5 font-semibold uppercase tracking-wider text-white/70 transition-colors hover:border-primary hover:text-primary"
             >
               {language === 'en' ? 'RO' : 'EN'}
             </Link>
@@ -47,16 +47,16 @@ const CampaignPitch = ({ form }: { form: FormDefinition }) => {
 
   return (
     <section className="lg:sticky lg:top-12">
-      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#dabc68]">{form.badge[language]}</span>
+      <span className="section-label">{form.badge[language]}</span>
       <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-        {form.title[language]} <span className="text-[#dabc68]">{form.highlight[language]}</span>
+        {form.title[language]} <span className="text-primary">{form.highlight[language]}</span>
       </h1>
       <p className="mt-5 max-w-lg text-base leading-relaxed text-white/60 sm:text-lg">{form.description[language]}</p>
       {form.perks && (
         <ul className="mt-8 space-y-3">
           {form.perks.map((perk) => (
             <li key={perk.en} className="flex items-center gap-3 text-white/80">
-              <CheckIcon className="h-4 w-4 shrink-0 text-[#dabc68]" />
+              <CheckIcon className="h-4 w-4 shrink-0 text-primary" />
               {perk[language]}
             </li>
           ))}
@@ -72,7 +72,7 @@ const SuccessState = ({ form }: { form: FormDefinition }) => {
 
   return (
     <div className="py-8 text-center" role="status">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#dabc68]/50 text-[#dabc68]">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-primary/50 text-primary">
         <CheckIcon className="h-7 w-7" />
       </div>
       <h2 className="mt-6 text-2xl font-bold">{t.form.successTitle}</h2>
@@ -82,11 +82,11 @@ const SuccessState = ({ form }: { form: FormDefinition }) => {
           href={CALENDLY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-[#dabc68] px-8 py-3.5 font-semibold text-[#1a1a2e] transition-colors hover:bg-[#e8cc7a]"
+          className="btn-primary"
         >
           {t.form.bookCall}
         </a>
-        <Link to={language === 'en' ? '/en' : '/'} className="rounded-full px-8 py-3 font-semibold text-white/70 transition-colors hover:text-white">
+        <Link to={localizedPath(language, '/')} className="rounded-full px-8 py-3 font-semibold text-white/70 transition-colors hover:text-white">
           {t.form.backHome}
         </Link>
       </div>
@@ -95,7 +95,7 @@ const SuccessState = ({ form }: { form: FormDefinition }) => {
 }
 
 const FormCard = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-10">{children}</div>
+  <div className="card p-6 sm:p-10">{children}</div>
 )
 
 const FormPage = () => {

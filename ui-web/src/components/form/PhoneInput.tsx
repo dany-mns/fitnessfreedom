@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { countries, DEFAULT_COUNTRY_ISO, flagEmoji, type Country } from '../../config/countries'
 import type { Language } from '../../i18n'
-import { ChevronIcon } from './icons'
+import { ChevronIcon } from '../icons'
 
 interface PhoneInputProps {
   language: Language
@@ -45,7 +45,7 @@ const PhoneInput = ({
   return (
     <div
       className={`flex overflow-hidden rounded-xl border bg-white/[0.04] transition-colors focus-within:bg-white/[0.07] ${
-        hasError ? 'border-red-400/60 focus-within:border-red-400' : 'border-white/10 hover:border-white/20 focus-within:border-[#dabc68]'
+        hasError ? 'border-red-400/60 focus-within:border-red-400' : 'border-white/10 hover:border-white/20 focus-within:border-primary'
       }`}
     >
       <div className="relative flex shrink-0 items-center gap-2 border-r border-white/10 pl-4 pr-3 hover:bg-white/[0.04]">
@@ -59,7 +59,7 @@ const PhoneInput = ({
           className="absolute inset-0 cursor-pointer opacity-0"
         >
           {sortedCountries.map((option) => (
-            <option key={option.iso} value={option.iso} className="bg-[#1a1a2e]">
+            <option key={option.iso} value={option.iso} className="bg-ink">
               {flagEmoji(option.iso)} {option.name} ({option.dialCode})
             </option>
           ))}

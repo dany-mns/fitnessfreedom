@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLanguage } from '../i18n'
+import SectionHeading from './SectionHeading'
 
 const Testimonials = () => {
   const [activeTab, setActiveTab] = useState<'photos' | 'videos'>('photos')
@@ -32,84 +33,70 @@ const Testimonials = () => {
     { name: 'Video Testimonial 3', youtubeId: 'N5RVd8jS4_c' },
   ]
 
-  return (
-    <section id="testimonials" className="py-20 md:py-32 bg-[#0f0f1a] px-4">
-      <div className="container mx-auto">
-        <div className="text-center mb-12 md:mb-16">
-          <span className="text-[#dabc68] font-semibold text-sm uppercase tracking-wider">
-            {t.testimonials.label}
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            {t.testimonials.title1} <span className="text-gradient">{t.testimonials.title2}</span>
-          </h2>
-          <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto">
-            {t.testimonials.description}
-          </p>
-        </div>
+  const tabs = [
+    { id: 'photos' as const, label: t.testimonials.photoResults },
+    { id: 'videos' as const, label: t.testimonials.videoStories },
+  ]
 
-        <div className="flex justify-center gap-4 mb-12">
-          <button
-            onClick={() => setActiveTab('photos')}
-            className={`px-6 py-3 rounded-full font-semibold transition-all ${
-              activeTab === 'photos'
-                ? 'bg-gradient-to-r from-[#dabc68] to-[#e8cc7a] text-white'
-                : 'glass-effect text-white/70 hover:text-white'
-            }`}
-          >
-            {t.testimonials.photoResults}
-          </button>
-          <button
-            onClick={() => setActiveTab('videos')}
-            className={`px-6 py-3 rounded-full font-semibold transition-all ${
-              activeTab === 'videos'
-                ? 'bg-gradient-to-r from-[#dabc68] to-[#e8cc7a] text-white'
-                : 'glass-effect text-white/70 hover:text-white'
-            }`}
-          >
-            {t.testimonials.videoStories}
-          </button>
+  return (
+    <section id="testimonials" className="border-t border-white/5 bg-surface px-4 py-20 md:py-28">
+      <div className="container mx-auto">
+        <SectionHeading
+          label={t.testimonials.label}
+          title={t.testimonials.title}
+          description={t.testimonials.description}
+        />
+
+        <div className="mb-12 flex justify-center">
+          <div role="tablist" className="inline-flex rounded-full border border-white/10 p-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === tab.id ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {activeTab === 'photos' && (
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {photoTestimonials.map((testimonial, index) => (
-              <div key={index} className="glass-effect rounded-2xl overflow-hidden hover-lift">
-                <div className="aspect-square bg-[#1a1a2e] overflow-hidden">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name}
-                    className="w-full h-full object-cover"
-                  />
+          <div className="grid gap-6 md:grid-cols-3">
+            {photoTestimonials.map((testimonial) => (
+              <figure key={testimonial.image} className="card overflow-hidden">
+                <div className="aspect-square overflow-hidden bg-ink">
+                  <img src={testimonial.image} alt={testimonial.name} className="h-full w-full object-cover" />
                 </div>
-                <div className="p-6">
-                  <div className="text-[#dabc68] font-semibold mb-2">
-                    {testimonial.result}
-                  </div>
-                  <p className="text-white/70 text-sm mb-4 italic">
-                    "{testimonial.quote}"
-                  </p>
-                  <p className="text-white font-semibold">{testimonial.name}</p>
-                </div>
-              </div>
+                <figcaption className="p-6">
+                  <div className="mb-3 text-sm font-semibold text-primary">{testimonial.result}</div>
+                  <blockquote className="mb-4 text-sm leading-relaxed text-white/60">“{testimonial.quote}”</blockquote>
+                  <p className="font-semibold text-white">{testimonial.name}</p>
+                </figcaption>
+              </figure>
             ))}
           </div>
         )}
 
         {activeTab === 'videos' && (
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {videoTestimonials.map((video, index) => (
-              <div key={index} className="glass-effect rounded-2xl overflow-hidden hover-lift">
-                <div className="aspect-video bg-[#1a1a2e]">
+          <div className="grid gap-6 md:grid-cols-3">
+            {videoTestimonials.map((video) => (
+              <div key={video.youtubeId} className="card overflow-hidden">
+                <div className="aspect-video bg-ink">
                   <iframe
                     src={`https://www.youtube.com/embed/${video.youtubeId}`}
                     title={video.name}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className="w-full h-full"
+                    className="h-full w-full"
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-white font-semibold">{video.name}</p>
+                  <p className="font-semibold text-white">{video.name}</p>
                 </div>
               </div>
             ))}

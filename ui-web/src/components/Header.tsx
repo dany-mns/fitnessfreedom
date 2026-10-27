@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
-import { useLanguage } from '../i18n'
+import { APPLY_FORM_PATH } from '../config/links'
+import { localizedPath, useLanguage } from '../i18n'
+import { Link } from 'react-router-dom'
+import { useNavItems } from './useNavItems'
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const applyPath = localizedPath(language, APPLY_FORM_PATH)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,18 +18,12 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navItems = [
-    { label: t.nav.home, href: '#home' },
-    { label: t.nav.about, href: '#about' },
-    { label: t.nav.forYou, href: '#match' },
-    { label: t.nav.results, href: '#testimonials' },
-    { label: t.nav.bookNow, href: '#booking' },
-  ]
+  const navItems = useNavItems()
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-[#1a1a2e]/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled || isMobileMenuOpen ? 'border-b border-white/5 bg-surface' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 py-4">
@@ -42,20 +40,27 @@ const Header = () => {
           </a>
 
           <div className="flex items-center gap-4">
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-8">
               {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-white/80 hover:text-[#dabc68] transition-colors font-medium"
+                  className="text-sm text-white/70 hover:text-white transition-colors font-medium"
                 >
                   {item.label}
                 </a>
               ))}
             </nav>
 
+            <Link
+              to={applyPath}
+              className="hidden sm:inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-primary-light"
+            >
+              {t.nav.apply}
+            </Link>
+
             <button
-              className="md:hidden text-white p-2"
+              className="lg:hidden text-white p-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -86,18 +91,21 @@ const Header = () => {
         </div>
 
         {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+          <nav className="lg:hidden mt-4 pb-4 border-t border-white/10 pt-4">
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-white/80 hover:text-[#dabc68] transition-colors font-medium"
+                  className="text-white/80 hover:text-primary transition-colors font-medium"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
                 </a>
               ))}
+              <Link to={applyPath} className="btn-primary mt-2">
+                {t.nav.apply}
+              </Link>
             </div>
           </nav>
         )}

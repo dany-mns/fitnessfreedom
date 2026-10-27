@@ -3,10 +3,10 @@
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
   --color-primary: #dabc68;
-  --color-primary-dark: #e55a2b;
-  --color-secondary: #1a1a2e;
-  --color-accent: #16213e;
-  --color-light: #f8f9fa;
+  --color-primary-light: #e8cc7a;
+  --color-ink: #1a1a2e;
+  --color-surface: #0f0f1a;
+  --color-surface-deep: #0a0a14;
 }
 
 html {
@@ -16,30 +16,21 @@ html {
 body {
   font-family: var(--font-sans);
   margin: 0;
+  background: var(--color-surface);
 }
 
-.gradient-bg {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+@utility btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-ink transition-colors hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #e8cc7a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@utility btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-3.5 font-semibold text-white transition-colors hover:border-primary hover:text-primary;
 }
 
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+@utility card {
+  @apply rounded-2xl border border-white/10 bg-white/[0.02];
 }
 
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+@utility section-label {
+  @apply text-xs font-semibold uppercase tracking-[0.2em] text-primary;
 }

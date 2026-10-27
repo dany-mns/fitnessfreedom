@@ -8,15 +8,10 @@
 ## Local development
 
 ```bash
-cd backend
-cp .env.example .env
-docker compose up -d db
-./mvnw spring-boot:run
-
-cd ../ui-web
-npm install
-npm run dev
+./dev.sh
 ```
+
+Starts PostgreSQL in Docker, the backend and the frontend on http://localhost:5173. `Ctrl+C` stops the backend and frontend; `./dev.sh down` stops the database. On first run it creates `backend/.env` from `.env.example` with a random `ADMIN_API_KEY`; change `DB_PORT` and `PORT` there if those ports are taken.
 
 The Vite dev server proxies `/api` to `http://localhost:8080`. Override with `VITE_DEV_API_PROXY` if the backend runs elsewhere. In production builds set `VITE_API_URL` to the backend origin.
 
@@ -28,7 +23,27 @@ Each campaign form lives at `/form/<slug>` (Romanian) and `/en/form/<slug>` (Eng
 
 Forms are defined in `ui-web/src/config/forms.ts`. Every form always asks for full name and phone number (with country prefix); extra questions go in `fields` and support `text`, `textarea`, `email`, `number`, `select`, `radio` and `checkbox`. Adding a new entry is all that is needed: the backend registers the campaign on its first submission.
 
-Each submission stores the campaign, the client (deduplicated by phone number in E.164 format), the answers as JSONB, the language, and the `utm_source` / `utm_medium` / `utm_campaign` / referrer it came from.
+Each submission stores the campaign, the client (deduplicated by phone number in E.164 format), the answers as JSONB, the language and where the visitor came from.
+
+## Traffic attribution
+
+When a visitor lands on any page of the site, the following are captured and kept for 30 days in the browser, so they are still attributed if they open a form later:
+
+- `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`
+- ad click IDs: `gclid` (Google), `fbclid` (Facebook/Instagram), `ttclid` (TikTok)
+- the external referrer (the website they came from) and the landing page
+
+A new visit with tags or from another website replaces the previous attribution; direct visits keep it.
+
+Example links:
+
+```
+https://fitnessfreedom.ro/form/christmas?utm_source=instagram&utm_medium=story&utm_campaign=xmas-2026
+https://fitnessfreedom.ro/form/sixpack?utm_source=tiktok&utm_medium=video&utm_campaign=sixpack-jan&utm_content=reel-1
+https://fitnessfreedom.ro/?utm_source=newsletter&utm_medium=email&utm_campaign=xmas-2026
+```
+
+`GET /api/admin/campaigns/{slug}/sources` groups submissions by source: `utm_source` first, then the click ID platform, then the referrer domain, otherwise `direct`.
 
 ## Backend API
 
@@ -37,6 +52,7 @@ Each submission stores the campaign, the client (deduplicated by phone number in
 | POST   | `/api/submissions`                           | public        |
 | GET    | `/api/admin/campaigns`                       | `X-Admin-Key` |
 | GET    | `/api/admin/campaigns/{slug}/submissions`    | `X-Admin-Key` |
+| GET    | `/api/admin/campaigns/{slug}/sources`        | `X-Admin-Key` |
 
 Admin endpoints are disabled until `ADMIN_API_KEY` is set.
 

@@ -2,7 +2,7 @@ import type { AnswerValue } from '../../api/submissions'
 import type { ChoiceField, FormField } from '../../config/forms'
 import type { Language } from '../../i18n'
 import { fieldClass } from './fieldClass'
-import { CheckIcon, ChevronIcon } from './icons'
+import { CheckIcon, ChevronIcon } from '../icons'
 
 interface FormFieldInputProps {
   field: FormField
@@ -33,7 +33,7 @@ const ChoiceGroup = ({ field, value, language, labelId, errorId, hasError, onCha
       {field.options.map((option) => (
         <label
           key={option.value}
-          className="group flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 px-4 py-3.5 text-white/75 transition-colors hover:border-white/25 has-checked:border-[#dabc68]/70 has-checked:text-white has-focus-visible:ring-2 has-focus-visible:ring-[#dabc68]/50"
+          className="group flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 px-4 py-3.5 text-white/75 transition-colors hover:border-white/25 has-checked:border-primary/70 has-checked:text-white has-focus-visible:ring-2 has-focus-visible:ring-primary/50"
         >
           <input
             type={multiple ? 'checkbox' : 'radio'}
@@ -45,7 +45,7 @@ const ChoiceGroup = ({ field, value, language, labelId, errorId, hasError, onCha
             className="peer sr-only"
           />
           <span
-            className={`flex h-5 w-5 shrink-0 items-center justify-center border-2 border-white/30 text-[#1a1a2e] transition-colors peer-checked:border-[#dabc68] peer-checked:bg-[#dabc68] ${
+            className={`flex h-5 w-5 shrink-0 items-center justify-center border-2 border-white/30 text-ink transition-colors peer-checked:border-primary peer-checked:bg-primary ${
               multiple ? 'rounded-md' : 'rounded-full'
             }`}
           >
@@ -80,9 +80,9 @@ const FormFieldInput = (props: FormFieldInputProps) => {
             onChange={(event) => onChange(event.target.value)}
             className={`${fieldClass(hasError)} cursor-pointer appearance-none pr-10 ${value ? '' : 'text-white/30'}`}
           >
-            <option value="" disabled className="bg-[#1a1a2e]">{selectPlaceholder}</option>
+            <option value="" disabled className="bg-ink">{selectPlaceholder}</option>
             {field.options.map((option) => (
-              <option key={option.value} value={option.value} className="bg-[#1a1a2e] text-white">
+              <option key={option.value} value={option.value} className="bg-ink text-white">
                 {option.label[language]}
               </option>
             ))}

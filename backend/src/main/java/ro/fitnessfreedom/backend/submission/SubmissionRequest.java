@@ -17,11 +17,17 @@ public record SubmissionRequest(
         @Valid Attribution attribution) {
 
     public record Attribution(
-            @Size(max = 100) String utmSource,
-            @Size(max = 100) String utmMedium,
-            @Size(max = 100) String utmCampaign,
-            @Size(max = 500) String referrer) {
+            @Size(max = 255) String utmSource,
+            @Size(max = 255) String utmMedium,
+            @Size(max = 255) String utmCampaign,
+            @Size(max = 255) String utmTerm,
+            @Size(max = 255) String utmContent,
+            @Size(max = 255) String gclid,
+            @Size(max = 255) String fbclid,
+            @Size(max = 255) String ttclid,
+            @Size(max = 500) String referrer,
+            @Size(max = 500) String landingPage) {
 
-        static final Attribution NONE = new Attribution(null, null, null, null);
+        static final Attribution NONE = new Attribution(null, null, null, null, null, null, null, null, null, null);
     }
 }

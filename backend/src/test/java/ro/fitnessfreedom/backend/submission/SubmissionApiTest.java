@@ -50,7 +50,38 @@ class SubmissionApiTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[1].phone").value("+40722123456"))
                 .andExpect(jsonPath("$[1].answers.goal").value("fat-loss"))
-                .andExpect(jsonPath("$[1].utmSource").value("instagram"));
+                .andExpect(jsonPath("$[1].attribution.utmSource").value("instagram"));
+    }
+
+    @Test
+    void groupsSubmissionsBySource() throws Exception {
+        submit("""
+                {"campaign":"summer","fullName":"Ion Pop","phoneCountryCode":"+40","phoneNumber":"0711000001",
+                 "attribution":{"utmSource":"newsletter","utmMedium":"email","utmContent":"hero-button","landingPage":"/?utm_source=newsletter"}}
+                """);
+        submit("""
+                {"campaign":"summer","fullName":"Dan Pop","phoneCountryCode":"+40","phoneNumber":"0711000002",
+                 "attribution":{"fbclid":"IwAR123"}}
+                """);
+        submit("""
+                {"campaign":"summer","fullName":"Ana Pop","phoneCountryCode":"+40","phoneNumber":"0711000003",
+                 "attribution":{"referrer":"https://www.google.com/search?q=antrenor"}}
+                """);
+        submit("""
+                {"campaign":"summer","fullName":"Eva Pop","phoneCountryCode":"+40","phoneNumber":"0711000004"}
+                """);
+
+        mvc.perform(get("/api/admin/campaigns/summer/sources").header("X-Admin-Key", "test-key"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(4)))
+                .andExpect(jsonPath("$[?(@.source == 'newsletter' && @.medium == 'email')]").exists())
+                .andExpect(jsonPath("$[?(@.source == 'facebook')]").exists())
+                .andExpect(jsonPath("$[?(@.source == 'google.com')]").exists())
+                .andExpect(jsonPath("$[?(@.source == 'direct')]").exists());
+
+        mvc.perform(get("/api/admin/campaigns/summer/submissions").header("X-Admin-Key", "test-key"))
+                .andExpect(jsonPath("$[3].attribution.utmContent").value("hero-button"))
+                .andExpect(jsonPath("$[3].attribution.landingPage").value("/?utm_source=newsletter"));
     }
 
     @Test
