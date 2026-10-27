@@ -1,6 +1,5 @@
 import { useLanguage } from '../i18n'
-
-const CALENDLY_URL = 'https://calendly.com/chris-fitnessfreedom/call'
+import { CALENDLY_URL } from '../config/links'
 
 const Booking = () => {
   const { t } = useLanguage()

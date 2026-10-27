@@ -1,0 +1,30 @@
+services:
+  db:
+    build: ./docker/postgres
+    container_name: fitnessfreedom-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-fitnessfreedom}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  backend:
+    build: .
+    container_name: fitnessfreedom-backend
+    restart: unless-stopped
+    profiles: ["app"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: ${DB_PASSWORD:-fitnessfreedom}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

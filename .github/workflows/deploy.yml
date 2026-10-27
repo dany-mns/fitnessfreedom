@@ -38,7 +38,7 @@ jobs:
             cd /home/${{ secrets.USER }}/fds/fitnessfreedom;
             git fetch origin main;
             git reset --hard origin/main;
-            docker build -t fitnessfreedom .;
+            docker build -t fitnessfreedom ui-web;
             docker stop fitnessfreedom || true;
             docker rm fitnessfreedom || true;
             docker run -d --name fitnessfreedom --restart unless-stopped -p 3002:80 fitnessfreedom;

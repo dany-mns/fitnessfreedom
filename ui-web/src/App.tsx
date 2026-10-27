@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Header, Hero, About, GoodMatch, Testimonials, Booking, Footer } from './components'
+import { Header, Hero, About, GoodMatch, Testimonials, Booking, Footer, FormPage } from './components'
 import { LanguageProvider } from './i18n'
 
 const HomePage = () => (
@@ -21,6 +21,8 @@ function App() {
     <BrowserRouter>
       <LanguageProvider>
         <Routes>
+          <Route path="/form/:slug" element={<FormPage />} />
+          <Route path="/en/form/:slug" element={<FormPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/en" element={<HomePage />} />
           <Route path="/en/*" element={<HomePage />} />
