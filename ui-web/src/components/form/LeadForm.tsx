@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { readAttribution } from '../../api/attribution'
-import { submitForm, type AnswerValue } from '../../api/submissions'
+import type { AnswerValue } from '../../api/payload'
+import { submitForm } from '../../api/submissions'
 import { countries, DEFAULT_COUNTRY_ISO, type Country } from '../../config/countries'
 import type { FormDefinition, FormField } from '../../config/forms'
 import { useLanguage, type Translations } from '../../i18n'
@@ -8,6 +9,8 @@ import { ArrowRightIcon } from '../icons'
 import FormFieldInput from './FormFieldInput'
 import PhoneInput from './PhoneInput'
 import QuestionBlock from './QuestionBlock'
+import TurnstileWidget from './TurnstileWidget'
+import { isValidEmail } from './email'
 import { fieldClass } from './fieldClass'
 import { isValidPhoneNumber, normalizePhoneNumber } from './phone'
 
@@ -16,7 +19,6 @@ interface LeadFormProps {
   onSuccess: () => void
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const FULL_NAME = 'fullName'
 const PHONE = 'phone'
 
@@ -25,7 +27,7 @@ const isBlank = (value: AnswerValue | undefined) =>
 
 const fieldError = (field: FormField, value: AnswerValue | undefined, t: Translations) => {
   if (isBlank(value)) return field.required ? t.form.required : null
-  if (field.type === 'email' && !EMAIL_PATTERN.test(String(value))) return t.form.invalidEmail
+  if (field.type === 'email' && !isValidEmail(String(value))) return t.form.invalidEmail
   return null
 }
 
@@ -38,7 +40,9 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [submitAttempted, setSubmitAttempted] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'unverified' | 'error'>('idle')
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileAttempt, setTurnstileAttempt] = useState(0)
 
   const errors: Record<string, string | null> = {
     [FULL_NAME]: fullName.trim().length < 2 ? t.form.invalidName : null,
@@ -56,6 +60,10 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
     event.preventDefault()
     setSubmitAttempted(true)
     if (Object.values(errors).some(Boolean)) return
+    if (!turnstileToken) {
+      setStatus('unverified')
+      return
+    }
 
     setStatus('submitting')
     try {
@@ -67,10 +75,13 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
         answers: Object.fromEntries(Object.entries(answers).filter(([, value]) => !isBlank(value))),
         language,
         attribution: readAttribution(),
+        turnstileToken,
       })
       onSuccess()
     } catch {
       setStatus('error')
+      setTurnstileToken(null)
+      setTurnstileAttempt((attempt) => attempt + 1)
     }
   }
 
@@ -148,9 +159,11 @@ const LeadForm = ({ form, onSuccess }: LeadFormProps) => {
         ))}
       </div>
 
-      {status === 'error' && (
+      <TurnstileWidget key={turnstileAttempt} language={language} onTokenChange={setTurnstileToken} />
+
+      {(status === 'error' || status === 'unverified') && (
         <p role="alert" className="mt-8 rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
-          {t.form.errorGeneric}
+          {status === 'error' ? t.form.errorGeneric : t.form.verifying}
         </p>
       )}
 

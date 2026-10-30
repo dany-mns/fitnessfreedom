@@ -1,29 +1,64 @@
 # Fitness Freedom
 
-| Folder    | Stack                                                    |
-|-----------|----------------------------------------------------------|
-| `ui-web`  | React 19, Vite, Tailwind 4                               |
-| `backend` | Java 25, Spring Boot 4.1, PostgreSQL 18, Flyway, Docker  |
+| Folder    | Stack                                                                      |
+|-----------|----------------------------------------------------------------------------|
+| `ui-web`  | React 19, Vite, Tailwind 4, Cloudflare Worker + D1 + Turnstile (deployed)  |
+| `backend` | Java 25, Spring Boot 4.1, PostgreSQL 18, Flyway, Docker (not deployed)     |
 
-## Local development
+## Website and lead form (`ui-web`)
 
-```bash
-./dev.sh
+The site is a static React app served by a Cloudflare Worker. The Worker only handles `POST /api/submissions`; every other path is served as a static asset. Everything runs on the Cloudflare free plan.
+
+```
+browser ──► Cloudflare Worker "fitnessfreedom"
+              ├─ static assets (React build)
+              └─ POST /api/submissions
+                   ├─ rate limit: 10 requests / minute / IP
+                   ├─ validation against src/config/forms.ts
+                   ├─ Turnstile verification
+                   └─ insert into D1 "fitnessfreedom" (EU jurisdiction)
 ```
 
-Starts PostgreSQL in Docker, the backend and the frontend on http://localhost:5173. `Ctrl+C` stops the backend and frontend; `./dev.sh down` stops the database. On first run it creates `backend/.env` from `.env.example` with a random `ADMIN_API_KEY`; change `DB_PORT` and `PORT` there if those ports are taken.
+### Local development
 
-The Vite dev server proxies `/api` to `http://localhost:8080`. Override with `VITE_DEV_API_PROXY` if the backend runs elsewhere. In production builds set `VITE_API_URL` to the backend origin.
+```bash
+cd ui-web
+cp .dev.vars.example .dev.vars
+npm install
+npx wrangler d1 migrations apply DB --local
+npm run dev
+```
 
-Run the backend together with the database in Docker: `docker compose --profile app up -d --build`.
+`npm run dev` runs the site and the Worker together with a local D1 database. `.env.development` and `.dev.vars.example` contain Cloudflare's Turnstile test keys, which always pass.
 
-## Campaign forms
+### Deployment
 
-Each campaign form lives at `/form/<slug>` (Romanian) and `/en/form/<slug>` (English), for example `/form/christmas?utm_source=instagram`.
+Cloudflare Workers Builds deploys on every push to `main` (root directory `ui-web`, build command `npm run build`, deploy command `npm run deploy`). `npm run deploy` applies pending D1 migrations from `ui-web/migrations` and then deploys the Worker.
 
-Forms are defined in `ui-web/src/config/forms.ts`. Every form always asks for full name and phone number (with country prefix); extra questions go in `fields` and support `text`, `textarea`, `email`, `number`, `select`, `radio` and `checkbox`. Adding a new entry is all that is needed: the backend registers the campaign on its first submission.
+The Turnstile site key is public and lives in `ui-web/.env.production`. The secret key is stored only in Cloudflare as the Worker secret `TURNSTILE_SECRET_KEY`.
 
-Each submission stores the campaign, the client (deduplicated by phone number in E.164 format), the answers as JSONB, the language and where the visitor came from.
+### Lead form
+
+The application form lives at `/form/coaching` (Romanian) and `/en/form/coaching` (English). Its questions are defined in `ui-web/src/config/forms.ts`; the Worker validates submissions against the same definition, so adding or changing a question needs no backend change. A new form is a new entry in that file, available at `/form/<slug>`.
+
+Every form asks for full name and phone number (with country prefix, stored in E.164 format). Extra questions support `text`, `textarea`, `email`, `number`, `select`, `radio` and `checkbox`.
+
+### Viewing leads
+
+Cloudflare dashboard → Storage & databases → D1 → `fitnessfreedom` → Console:
+
+```sql
+SELECT created_at, full_name, phone, source, utm_campaign, answers
+FROM submissions
+ORDER BY created_at DESC;
+
+SELECT campaign, source, utm_campaign, COUNT(*) AS leads
+FROM submissions
+GROUP BY campaign, source, utm_campaign
+ORDER BY leads DESC;
+```
+
+`source` is `utm_source` if present, otherwise the ad platform of the click ID (`google`, `facebook`, `tiktok`), otherwise the referrer domain, otherwise `direct`.
 
 ## Traffic attribution
 
@@ -38,14 +73,14 @@ A new visit with tags or from another website replaces the previous attribution;
 Example links:
 
 ```
-https://fitnessfreedom.ro/form/christmas?utm_source=instagram&utm_medium=story&utm_campaign=xmas-2026
-https://fitnessfreedom.ro/form/sixpack?utm_source=tiktok&utm_medium=video&utm_campaign=sixpack-jan&utm_content=reel-1
-https://fitnessfreedom.ro/?utm_source=newsletter&utm_medium=email&utm_campaign=xmas-2026
+https://fitnessfreedom.eu/form/coaching?utm_source=instagram&utm_medium=story&utm_campaign=xmas-2026
+https://fitnessfreedom.eu/form/coaching?utm_source=tiktok&utm_medium=video&utm_campaign=jan-2027&utm_content=reel-1
+https://fitnessfreedom.eu/?utm_source=newsletter&utm_medium=email&utm_campaign=xmas-2026
 ```
 
-`GET /api/admin/campaigns/{slug}/sources` groups submissions by source: `utm_source` first, then the click ID platform, then the referrer domain, otherwise `direct`.
+## Spring Boot backend (not deployed)
 
-## Backend API
+`./dev.sh` starts PostgreSQL in Docker, the backend and the frontend. The backend keeps the same submission API backed by PostgreSQL and adds admin endpoints:
 
 | Method | Path                                         | Auth          |
 |--------|----------------------------------------------|---------------|

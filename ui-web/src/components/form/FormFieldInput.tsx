@@ -1,4 +1,4 @@
-import type { AnswerValue } from '../../api/submissions'
+import type { AnswerValue } from '../../api/payload'
 import type { ChoiceField, FormField } from '../../config/forms'
 import type { Language } from '../../i18n'
 import { fieldClass } from './fieldClass'

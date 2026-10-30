@@ -1,20 +1,9 @@
+import { TRACKED_PARAMS, type Attribution, type TrackedParam } from './payload'
+
 const STORAGE_KEY = 'ff_attribution'
 const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000
 const MAX_PARAM_LENGTH = 255
 const MAX_URL_LENGTH = 500
-
-const TRACKED_PARAMS = {
-  utmSource: 'utm_source',
-  utmMedium: 'utm_medium',
-  utmCampaign: 'utm_campaign',
-  utmTerm: 'utm_term',
-  utmContent: 'utm_content',
-  gclid: 'gclid',
-  fbclid: 'fbclid',
-  ttclid: 'ttclid',
-} as const
-
-export type Attribution = Record<keyof typeof TRACKED_PARAMS | 'referrer' | 'landingPage', string | null>
 
 let sessionAttribution: Attribution | null = null
 
@@ -39,7 +28,7 @@ const fromCurrentVisit = (): Attribution | null => {
   const params = new URLSearchParams(window.location.search)
   const tracked = Object.fromEntries(
     Object.entries(TRACKED_PARAMS).map(([key, param]) => [key, truncate(params.get(param), MAX_PARAM_LENGTH)]),
-  ) as Record<keyof typeof TRACKED_PARAMS, string | null>
+  ) as Record<TrackedParam, string | null>
   const referrer = truncate(externalReferrer(), MAX_URL_LENGTH)
 
   if (!referrer && !Object.values(tracked).some(Boolean)) return null
@@ -66,7 +55,7 @@ export const captureAttribution = () => {
 }
 
 const directVisit = (): Attribution => ({
-  ...(Object.fromEntries(Object.keys(TRACKED_PARAMS).map((key) => [key, null])) as Record<keyof typeof TRACKED_PARAMS, null>),
+  ...(Object.fromEntries(Object.keys(TRACKED_PARAMS).map((key) => [key, null])) as Record<TrackedParam, null>),
   referrer: null,
   landingPage: currentLandingPage(),
 })
